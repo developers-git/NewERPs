@@ -1,0 +1,68 @@
+﻿@model Erps.Models.Permission
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="panel panel-default" style="padding: 10px; margin: 10px">
+    <div class="panel-heading" style="background-color:#428bca">
+        <l style="color:white">Details</l>
+    </div>
+    <hr />
+
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ControllerName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ControllerName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ViewName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ViewName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.assignedRole)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.assignedRole)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Module)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Module)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.webFormUrl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.webFormUrl)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PermissionID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

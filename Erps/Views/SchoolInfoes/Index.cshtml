@@ -1,0 +1,156 @@
+﻿@*@model IEnumerable<Erps.Models.SchoolInfo>*@
+@model PagedList.IPagedList<Erps.Models.SchoolInfo>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<div class="row"  style="font:smaller">
+
+    <table class="table">
+        <tr>
+            <th>
+
+                <label>
+                    <span style="color:black">
+                        School Type
+                    </span>
+                </label>
+            </th>
+            <th>
+
+                <label>
+                    <span style="color:black">
+                        School Name
+                    </span>
+                </label>
+            </th>
+            <th>
+                <label>
+                    <span style="color:black">
+                        Address
+                    </span>
+                </label>
+
+            </th>
+            <th>
+                <label>
+                    <span style="color:black">
+                        Tel
+                    </span>
+                </label>
+
+            </th>
+            <th>
+                <label>
+
+                    <span style="color:black">
+                        Other Tel
+                    </span>
+                </label>
+            </th>
+            <th>
+                <label>
+                    <span style="color:black">
+                        Fax No
+                    </span>
+                </label>
+
+            </th>
+            <th>
+                <label>
+                    <span style="color:black">
+                        Email
+                    </span>
+                </label>
+
+            </th>
+            <th>
+                <label>
+                    <span style="color:black">
+                        Website
+                    </span>
+                </label>
+
+            </th>
+            <th>
+                <label>
+                    <span style="color:black">
+                        Logo
+                    </span>
+                </label>
+
+            </th>
+
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SchoolType1.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SchoolName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AltContactNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FaxNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Website)
+                </td>
+                <td>
+                    <img width="60" height="60" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Logo)" />
+                    @*@Html.DisplayFor(modelItem => item.Logo)*@
+                </td>
+
+                <td>
+
+                    <a href="@Url.Action("Edit", new { id = item.S_Id })">
+                        <i class="glyphicon glyphicon-pencil"></i>
+
+                    </a>
+                    |
+                    <a href="@Url.Action("Details", new { id = item.S_Id})">
+                        <i class="glyphicon glyphicon-file"></i>
+
+                    </a>
+                    |
+                    <a href="@Url.Action("Delete", new { id =  item.S_Id})">
+                        <i class="glyphicon glyphicon-trash"></i>
+
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </table>
+
+</div>
+ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of
+@Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index",
+new
+{
+page,
+sortOrder = ViewBag.CurrentSort,
+currentFilter =
+ViewBag.CurrentFilter
+}))

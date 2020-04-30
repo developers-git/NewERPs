@@ -1,0 +1,70 @@
+﻿@model SaccoRegsitration.Models.Report
+@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+@{
+    var message = ViewBag.SuccessMsg;
+}
+
+<script type="text/javascript">
+    var message = '@message';
+    if(message){
+  
+        window.open('/Reports/AttendanceReport.aspx', '_blank');
+        // similar behavior as an HTTP redirect
+
+    }
+</script>
+<div style="margin-left:15%;margin-right:10%;width:800px;background:white" class="form-horizontal">
+    <div class="panel-heading" style="background-color:#428bca">
+        <l style="color:white">Full Register Reports</l>
+    </div>
+    <hr />
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal" style="margin-left:5%">
+       
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+          
+                    @Html.LabelFor(model => model.ReportName, htmlAttributes: new { @class = "control-label col-md-4" })
+              
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.ReportName, (IEnumerable<SelectListItem>)ViewBag.Role, null, htmlAttributes: new { @class = "form-control", @onchange = "this.form.submit();" })
+
+
+                    @Html.ValidationMessageFor(model => model.ReportName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+               
+                    @Html.LabelFor(model => model.Asat, htmlAttributes: new { @class = "control-label col-md-4" })
+            
+                <div class="col-md-10">
+                    @Html.JQueryUI().DatepickerFor(model => model.Asat).ShowButtonPanel(true).ChangeYear(true).ChangeMonth(true)
+
+
+                    @Html.ValidationMessageFor(model => model.Asat, "", new { @class = "text-danger" })
+                </div>
+            </div>
+           
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-5">
+                    <input type="submit" value="Generate Report" class="btn btn-info" />
+                    <input type="reset" value="Clear" class="btn btn-info" id="btn" />
+                </div>
+            </div>
+        </div>
+    }
+
+
+</div>
+
+</section>

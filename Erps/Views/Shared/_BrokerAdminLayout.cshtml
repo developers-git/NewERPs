@@ -1,0 +1,813 @@
+﻿@using WebMatrix.Data
+
+@using Erps.DAO;
+@using Erps.Models;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>ERPS</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="@Url.Content("~/vendor/bootstrap/css/bootstrap.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/vendor/css/my_style.css")" rel="stylesheet">
+    <!-- MetisMenu CSS -->
+    <link href="@Url.Content("~/vendor/metisMenu/metisMenu.min.css")" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="@Url.Content("~/dist/css/sb-admin-2.css")" rel="stylesheet">
+    <link href="@Url.Content("~/dist/css/jquery.mCustomScrollbar.min.css")" rel="stylesheet">
+    <!-- Morris Charts CSS -->
+    <link href="@Url.Content("~/vendor/morrisjs/morris.css")" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="@Url.Content("~/Content/font-awesome.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/font-awesome.css")" rel="stylesheet" />
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <link href="https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css" rel="stylesheet">
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/themes/base/css")
+
+    <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/jquery")
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+    @Scripts.Render("~/bundles/jqueryui")
+    <!-- The DevExpress ASP.NET MVC Extensions' scripts -->
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.HtmlEditor },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.GridView },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.PivotGrid },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Chart },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Report },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Scheduler },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.TreeList },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Spreadsheet },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.RichEdit },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.SpellChecker }
+    )
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+        new Script { ExtensionSuite = ExtensionSuite.HtmlEditor },
+        new Script { ExtensionSuite = ExtensionSuite.GridView },
+        new Script { ExtensionSuite = ExtensionSuite.PivotGrid },
+        new Script { ExtensionSuite = ExtensionSuite.Editors },
+        new Script { ExtensionSuite = ExtensionSuite.Chart },
+        new Script { ExtensionSuite = ExtensionSuite.Report },
+        new Script { ExtensionSuite = ExtensionSuite.Scheduler },
+        new Script { ExtensionSuite = ExtensionSuite.TreeList },
+        new Script { ExtensionSuite = ExtensionSuite.Spreadsheet },
+        new Script { ExtensionSuite = ExtensionSuite.RichEdit },
+        new Script { ExtensionSuite = ExtensionSuite.SpellChecker }
+    )
+</head>
+
+<body>
+
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar  navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0;background-color:#ffffff;border-bottom: 1px solid #3288b4;box-shadow: 0px 1px 1px #50b5e8;z-index: 999;width: 100%;">
+            <div class="navbar-header" style="background-color:white">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand" href="~/BrokerAdmin">
+                    @{ string vx = "";
+                        try
+                        {
+                            SBoardContext db9 = new SBoardContext();
+                            var c = db9.Users.ToList().Where(a => a.Email == WebSecurity.CurrentUserName);
+
+                            foreach (var d in c)
+                            {
+                                vx = d.BrokerName;
+                            }
+
+                        }
+                        catch (Exception f)
+                        {
+
+                            vx = "";
+                        }
+
+                    }
+                    @vx
+                </a>
+
+            </div>
+
+
+            <!-- /.navbar-header -->
+            <ul class="nav navbar-top-links navbar-right">
+
+                <li class="dropdown" style="background-color:white">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-messages">
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <strong>John Smith</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>Yesterday</em>
+                                    </span>
+                                </div>
+                                <div>Broker updates</div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <strong>John Smith</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>Yesterday</em>
+                                    </span>
+                                </div>
+                                <div>Broker updates</div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <strong>John Smith</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>Yesterday</em>
+                                    </span>
+                                </div>
+                                <div>Broker updates</div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>Read All Messages</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-messages -->
+                </li>
+                <!-- /.dropdown -->
+                <li class="dropdown" style="background-color:white">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-tasks fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-tasks">
+                        @{
+                            SBoardContext db2 = new SBoardContext();
+                            int myid = 0;
+                            var users = db2.Users.ToList().Where(a => a.Email == WebSecurity.CurrentUserName);
+
+                            foreach (var c in users)
+                            {
+                                myid = c.UserId;
+                            }
+
+                            var tasks = db2.Tasks.ToList().Where(a => a.TaskUserID == myid && a.status != "Complete").Take(5);
+
+                            foreach (var d in tasks)
+                            {
+
+                                if (d.percentagedone < 20)
+                                {
+
+                                    <li>
+                                        <a href="#">
+                                            <div>
+                                                <p>
+                                                    <strong>@d.TaskTitle</strong>
+                                                    <span class="pull-right text-muted">@d.percentagedone Complete</span>
+                                                </p>
+                                                <div class="progress progress-striped active">
+                                                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="@d.percentagedone" aria-valuemin="0" aria-valuemax="100" style="width: @d.percentagedone%">
+                                                        <span class="sr-only">@d.percentagedone Complete (danger)</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+
+                                }
+                                else if (d.percentagedone > 30 && d.percentagedone < 50)
+                                {
+                                    <li>
+                                        <a href="#">
+                                            <div>
+                                                <p>
+                                                    <strong>@d.TaskTitle</strong>
+                                                    <span class="pull-right text-muted">@d.percentagedone Complete</span>
+                                                </p>
+                                                <div class="progress progress-striped active">
+                                                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="@d.percentagedone" aria-valuemin="0" aria-valuemax="100" style="width: @d.percentagedone%">
+                                                        <span class="sr-only">@d.percentagedone Complete (warning)</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                }
+                                else if (d.percentagedone > 50)
+                                {
+
+                                    <li>
+                                        <a href="#">
+                                            <div>
+                                                <p>
+                                                    <strong>@d.TaskTitle</strong>
+                                                    <span class="pull-right text-muted">@d.percentagedone Complete</span>
+                                                </p>
+                                                <div class="progress progress-striped active">
+                                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="@d.percentagedone" aria-valuemin="0" aria-valuemax="100" style="width: @d.percentagedone%">
+                                                        <span class="sr-only">@d.percentagedone Complete (success)</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+
+                                }
+
+
+
+                            }
+                        }
+
+
+
+
+                        <li>
+                            <a class="text-center" href="~/TasksUser/Index">
+                                <strong>See All Tasks</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-tasks -->
+                </li>
+                <!-- /.dropdown -->
+                <li class="dropdown" style="background-color:white">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-alerts">
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-comment fa-fw"></i>A new settled trade
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-twitter fa-fw"></i> A new client to be updated
+                                    <span class="pull-right text-muted small">12 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-envelope fa-fw"></i> A new task added to ERPS
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-tasks fa-fw"></i>A new order placed
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-upload fa-fw"></i> Payment received
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>See All Alerts</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-alerts -->
+                </li>
+                <!-- /.dropdown -->
+                <li class="dropdown" style="background-color:white">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li>
+                            <a href="~/UserAccounts"><i class="fa fa-user fa-fw"></i>User Profile/Change Password</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="~/Account/LogOut" "><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+
+            <!-- /.navbar-top-links -->
+            <div class="navbar-default sidebar" role="navigation">
+                @{
+                    string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/'); ;
+
+                }
+
+
+                <div class="sidebar-nav navbar-collapse">
+                    <div class="s-profile">
+                        <a href="" data-ma-action="profile-menu-toggle" style="background: url(@baseUrl/images/bbo.png) left top no-repeat;background-size: 100%;">
+                            <div class="sp-pic">
+                                <img src="@baseUrl/images/bbo.png" alt="" class="mCS_img_loaded">
+                            </div>
+
+
+                        </a>
+
+
+                    </div>
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a href="~/BrokerAdmin"><i class='glyphicon glyphicon-home my_right'></i>Home</a>
+                        </li>
+
+
+                        @{
+
+                            var db = Database.Open("SBoardConnection");
+
+                            var selectQueryString = "SELECT * FROM Modules where (select RoleName from Role where Roleid=Modules.RoleID)='BrokerAdmin'  order by MenuRank asc";
+
+                            string name = "";
+                            string controllername = "";
+                            string action = "";
+                            string forinner = "";
+                            string webformurl = "";
+                            bool check = false;
+                            string controllername1 = "";
+                            string action1 = "";
+                            foreach (var row in db.Query(selectQueryString))
+                            {
+                                forinner = row.ModulesName;
+                                action1 = row.ViewName;
+                                controllername1 = row.ControllerName;
+                                <li>
+
+                                    @if (controllername1 != null && action1 != null)
+                                    {
+                                        <a href="#" onclick="location.href ='@Url.Action(action1, controllername1)';"><i class='@row.glyphicon my_right'></i>@row.ModulesName <span class="fa arrow"></span></a>
+
+                                    }
+                                    else
+                                    {
+                                        <a href="#"><i class='@row.glyphicon my_right'></i>@row.ModulesName <span class="fa arrow"></span></a>
+
+                                    }
+
+
+
+                                    @{
+                                        var selectQueryString2 = "Select * from Permission  where assignedRole='BrokerAdmin' and Module='" + forinner + "'  order by Name asc";
+                                        <ul class="nav nav-second-level">
+                                            @foreach (var row2 in db.Query(selectQueryString2))
+                                            {
+                                                controllername = row2.ControllerName;
+                                                name = row2.Name;
+                                                action = row2.ViewName;
+                                                webformurl = row2.webFormUrl;
+                                                check = row2.IsWebForm;
+                                                if (check == true)
+                                                {
+                                                    <li>
+                                                        <a href='~/@webformurl'>@name</a>
+
+                                                    </li>
+                                                }
+                                                else
+                                                {
+                                                    <li>
+                                                        <a href='@Url.Action(action, controllername)'>@name</a>
+
+
+                                                    </li>
+
+                                                }
+
+
+
+                                            }
+                                        </ul>
+                                    }
+                                </li>
+
+
+
+                                        }
+
+                        }
+
+                        <li>
+                            <a href="@Url.Action("LogOut","Account")"><i class='glyphicon glyphicon-log-out my_right'></i>Log Out</a>
+                        </li>
+                    </ul>
+
+
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+        @{
+            SBoardContext bb = new SBoardContext();
+            var clients = bb.Account_Creations.ToList().Count();
+            var orders = bb.Order_Lives.ToList().Count();
+            var matched = bb.Order_Lives.ToList().Where(a => a.WebServiceID == "Matched").Count();
+            var settled = bb.DealerDGs.ToList().Count();
+            //matchedorders
+
+
+        }
+        <div id="page-wrapper">
+
+            <!-- /.row -->
+            <div class="row" style="padding-top: 30px;">
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="glyphicon glyphicon-copy fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge" id="blink">
+                                        @matched
+
+
+                                    </div>
+                                    <b style="text-transform: uppercase;">Matched Orders</b>
+                                </div>
+                            </div>
+                        </div>
+                        <a href='#'>
+                            <div class="panel-footer">
+                                <span class="pull-left"></span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+
+                                    <i class="glyphicon glyphicon-save-file fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge" id="blink_1">
+
+
+                                        @settled
+
+                                    </div>
+                                    <b style="text-transform: uppercase;">Settled Trades</b>
+                                </div>
+                            </div>
+                        </div>
+                        <a href='#'>
+                            <div class="panel-footer">
+                                <span class="pull-left"></span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+
+                                    <i class="glyphicon glyphicon-open-file fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge" id="blink_2">
+
+                                        @orders
+                                    </div>
+                                    <b style="text-transform: uppercase;">  New Orders </b>
+                                </div>
+                            </div>
+                        </div>
+                        <a href='#'>
+                            <div class="panel-footer">
+                                <span class="pull-left"></span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="glyphicon glyphicon-user fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge" id="blink_3">
+
+
+                                        @clients
+
+
+                                    </div>
+                                    <b style="text-transform: uppercase;"> Clients Added</b>
+                                </div>
+                            </div>
+                        </div>
+                        <a href='#'>
+                            <div class="panel-footer">
+                                <span class="pull-left"></span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+
+            </div>         @{
+                var message = "";
+                try
+                {
+                    message = System.Web.HttpContext.Current.Session["NOT"].ToString();
+                }
+                catch (Exception)
+                {
+
+                    message = "";
+                }
+                System.Web.HttpContext.Current.Session["NOT"] = "";
+            }
+
+            @if (message != "")
+            {
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+                <script type="text/javascript">
+	$(document).ready(function(){
+		$("#myModal").modal('show');
+	});
+                </script>
+            }
+            <div id="myModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">Broker Back Office Notification</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>@message</p>
+                            <button type="button" data-dismiss="modal" class="btn btn-info btn-raised btn-block btn-flat">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel">
+                        <!--Load Form -->
+                        @RenderBody()
+
+                    </div>
+                    <!-- /.panel -->
+                    <!-- /.panel -->
+                    <!-- /.panel -->
+                </div>
+                @*<!-- /.col-lg-8 -->
+                    <div class="col-lg-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <i class="fa fa-bell fa-fw"></i> Notifications Panel
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div class="list-group">
+                                    <a href="#" class="list-group-item">
+                                        <i class="fa fa-comment fa-fw"></i> A new settled trade
+                                        <span class="pull-right text-muted small">
+                                            <em>4 minutes ago</em>
+                                        </span>
+                                    </a>
+                                    <a href="#" class="list-group-item">
+                                        <i class="fa fa-twitter fa-fw"></i> New client to be registered
+                                        <span class="pull-right text-muted small">
+                                            <em>12 minutes ago</em>
+                                        </span>
+                                    </a>
+                                    <a href="#" class="list-group-item">
+                                        <i class="fa fa-envelope fa-fw"></i> New client to be updated
+                                        <span class="pull-right text-muted small">
+                                            <em>27 minutes ago</em>
+                                        </span>
+                                    </a>
+                                    <a href="#" class="list-group-item">
+                                        <i class="fa fa-tasks fa-fw"></i> New Task added for you in ERPS
+                                        <span class="pull-right text-muted small">
+                                            <em>43 minutes ago</em>
+                                        </span>
+                                    </a>
+                                    <a href="#" class="list-group-item">
+                                        <i class="fa fa-upload fa-fw"></i> A new deal has been matched
+                                        <span class="pull-right text-muted small">
+                                            <em>11:32 AM</em>
+                                        </span>
+                                    </a>
+
+                                    <a href="#" class="list-group-item">
+                                        <i class="fa fa-shopping-cart fa-fw"></i> New Order Placed
+                                        <span class="pull-right text-muted small">
+                                            <em>9:49 AM</em>
+                                        </span>
+                                    </a>
+                                    <a href="#" class="list-group-item">
+                                        <i class="fa fa-money fa-fw"></i> Payment Received
+                                        <span class="pull-right text-muted small">
+                                            <em>Yesterday</em>
+                                        </span>
+                                    </a>
+                                </div>
+                                <!-- /.list-group -->
+                                <a href="#" class="btn btn-primary btn-block">View All Alerts</a>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+                        <!-- /.panel -->
+                        <div class="panel-body">
+                            <ul class="chat" style="display:none">
+                                <li class="left clearfix">
+                                    <span class="chat-img pull-left">
+                                        <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
+                                    </span>
+                                    <div class="chat-body clearfix">
+                                        <div class="header">
+                                            <strong class="primary-font">Jack Sparrow</strong>
+                                            <small class="pull-right text-muted">
+                                                <i class="fa fa-clock-o fa-fw"></i> 12 mins ago
+                                            </small>
+                                        </div>
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
+                                        </p>
+                                    </div>
+                                </li>
+                                <li class="right clearfix">
+                                    <span class="chat-img pull-right">
+                                        <img src="http://placehold.it/50/FA6F57/fff" alt="User Avatar" class="img-circle" />
+                                    </span>
+                                    <div class="chat-body clearfix">
+                                        <div class="header">
+                                            <small class=" text-muted">
+                                                <i class="fa fa-clock-o fa-fw"></i> 13 mins ago
+                                            </small>
+                                            <strong class="pull-right primary-font">Bhaumik Patel</strong>
+                                        </div>
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
+                                        </p>
+                                    </div>
+                                </li>
+                                <li class="left clearfix">
+                                    <span class="chat-img pull-left">
+                                        <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
+                                    </span>
+                                    <div class="chat-body clearfix">
+                                        <div class="header">
+                                            <strong class="primary-font">Jack Sparrow</strong>
+                                            <small class="pull-right text-muted">
+                                                <i class="fa fa-clock-o fa-fw"></i> 14 mins ago
+                                            </small>
+                                        </div>
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
+                                        </p>
+                                    </div>
+                                </li>
+                                <li class="right clearfix">
+                                    <span class="chat-img pull-right">
+                                        <img src="http://placehold.it/50/FA6F57/fff" alt="User Avatar" class="img-circle" />
+                                    </span>
+                                    <div class="chat-body clearfix">
+                                        <div class="header">
+                                            <small class=" text-muted">
+                                                <i class="fa fa-clock-o fa-fw"></i> 15 mins ago
+                                            </small>
+                                            <strong class="pull-right primary-font">Bhaumik Patel</strong>
+                                        </div>
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
+                                        </p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /.panel-body -->
+                        <div class="panel-footer">
+                            <div class="input-group">
+                                <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here~." />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-warning btn-sm" id="btn-chat">
+                                        Send
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- /.panel-footer -->
+                    </div>*@
+                <!-- /.panel .chat-panel -->
+                <!-- /.panel-body -->
+                <!-- /.panel-footer -->
+            </div>
+            <!-- /.panel .chat-panel -->
+        </div>
+        <!-- /.col-lg-4 -->
+    </div>
+    <!-- /.row -->
+    </div>
+    <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+    <!-- jQuery -->
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="~/vendor/metisMenu/metisMenu.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="~/dist/js/sb-admin-2.js"></script>
+    <script>
+    var blacktime = 500;
+    var whitetime = 500;
+    //These can be as long as you desire in milliseconds
+    setTimeout(whiteFunc,blacktime);
+    function whiteFunc(){
+        document.getElementById("blink").style.color = "#31708f";
+        document.getElementById("blink_1").style.color = "#3c763d";
+        document.getElementById("blink_2").style.color = "white";
+        document.getElementById("blink_3").style.color = "#8a6d3b";
+        setTimeout(blackFunc,whitetime);
+    }
+    function blackFunc(){
+        document.getElementById("blink").style.color = "#d9edf7";
+        document.getElementById("blink_1").style.color = "#dff0d8";
+        document.getElementById("blink_2").style.color = "#1d5f92";
+        document.getElementById("blink_3").style.color = "#fcf8e3";
+        setTimeout(whiteFunc,blacktime);
+    }
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+
+</html>

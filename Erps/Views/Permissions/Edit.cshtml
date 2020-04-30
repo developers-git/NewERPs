@@ -1,0 +1,207 @@
+﻿@model Erps.Models.Permission
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="panel panel-default" style="padding: 10px; margin: 10px">
+        <div class="panel-heading" style="background-color:#428bca">
+            <l style="color:white">Edit Permissions Form</l>
+        </div>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.PermissionID)
+        <table class="table table-striped">
+            <tr>
+                <td>
+                  
+                        @Html.LabelFor(model => model.ControllerName, htmlAttributes: new { @class = "" })
+                 <br />
+                            @Html.EditorFor(model => model.ControllerName, new { htmlAttributes = new { @class = "form-control", @style = "width:250px" } })
+                            @Html.ValidationMessageFor(model => model.ControllerName, "", new { @class = "text-danger" })
+                      
+                </td>
+                <td>
+                  
+                        @Html.LabelFor(model => model.ViewName, htmlAttributes: new { @class = "control-label col-md-5" })
+                    <br />
+                            @Html.EditorFor(model => model.ViewName, new { htmlAttributes = new { @class = "form-control", @style = "width:250px" } })
+                            @Html.ValidationMessageFor(model => model.ViewName, "", new { @class = "text-danger" })
+                     
+                </td>
+                <td>
+                
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "" })
+                    <br />
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @style = "width:250px" } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                      
+                </td>
+            </tr>
+            <tr>
+                <td>
+                  
+                        @Html.LabelFor(model => model.assignedRole, htmlAttributes: new { @class = "" })
+                    <br />
+                            @Html.DropDownListFor(model => model.assignedRole, (IEnumerable<SelectListItem>)ViewBag.Role, new { @class = "form-control", @style = "width:250px" })
+
+
+                            @Html.ValidationMessageFor(model => model.assignedRole, "", new { @class = "text-danger" })
+                       
+                </td>
+                <td>
+         
+                        @Html.LabelFor(model => model.Module, htmlAttributes: new { @class = "control-label col-md-5" })
+                    <br />
+                            @Html.DropDownListFor(model => model.Module, (IEnumerable<SelectListItem>)ViewBag.Category, htmlAttributes: new { @class = "form-control", @style = "width:250px" })
+
+                            @Html.ValidationMessageFor(model => model.Module, "", new { @class = "text-danger" })
+                      
+                </td>
+                <td>
+               
+                        @Html.LabelFor(model => model.IsDashboard, htmlAttributes: new { @class = "" })
+                    <br />
+                            @Html.EditorFor(model => model.IsDashboard)
+                            @Html.ValidationMessageFor(model => model.IsDashboard, "", new { @class = "text-danger" })
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                  
+                        @Html.LabelFor(model => model.IsWebForm, htmlAttributes: new { @class = "" })
+                    <br />
+                            @Html.EditorFor(model => model.IsWebForm)
+                            @Html.ValidationMessageFor(model => model.IsWebForm, "", new { @class = "text-danger" })
+                      
+                </td>
+                <td>
+
+      
+                        @Html.LabelFor(model => model.webFormUrl, htmlAttributes: new { @class = "" })
+                    <br />
+                            @Html.EditorFor(model => model.webFormUrl, new { htmlAttributes = new { @class = "form-control", @style = "width:250px" } })
+                            @Html.ValidationMessageFor(model => model.webFormUrl, "", new { @class = "text-danger" })
+                     
+                </td>
+                <td>
+
+               
+                        @Html.LabelFor(model => model.IsActice, htmlAttributes: new { @class = "" })
+                    <br />
+                                 @Html.EditorFor(model => model.IsActice)
+                            @Html.ValidationMessageFor(model => model.IsActice, "", new { @class = "text-danger" })
+                       
+                </td>
+            </tr>
+        </table>
+        
+
+       
+
+       
+
+        
+
+     
+        
+
+       
+        <div class="form-group">
+            <div class="col-md-3">
+                <input type="submit" value="Save" class="btn btn-info btn-raised btn-block btn-flat" />
+            </div>
+            <div style="visibility:hidden">
+                @Html.EditorFor(model => model.Module)
+
+
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@{
+    string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/'); ;
+
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<script type="text/javascript">
+        $(function () {
+            $("select").each(function () {
+                if ($(this).find("option").length <= 1) {
+                    $(this).attr("disabled", "disabled");
+                }
+            });
+
+            $("select").change(function () {
+                var value = 0;
+                if ($(this).val() != "") {
+                    value = $(this).val();
+                }
+                var id = $(this).attr("id");
+                $.ajax({
+                    type: "POST",
+                    url: "@baseUrl/Permissions/AjaxMethod",
+                    data: '{type: "' + id + '", value: ' + value + '}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        var dropDownId;
+                        var list;
+                        switch (id) {
+                            case "assignedRole":
+                                dropDownId = "#Module";
+                                list = response;
+                                DisableDropDown("#Module");
+                                PopulateDropDown("#Module", list);
+                                break;
+
+
+                          }
+
+                    },
+                    failure: function (response) {
+                        //alert(response.responseText);
+                    },
+                    error: function (response) {
+                        //alert(response.responseText);
+                    }
+                });
+            });
+        });
+
+        function DisableDropDown(dropDownId) {
+            $(dropDownId).attr("disabled", "disabled");
+            $(dropDownId).empty().append('<option selected="selected" value="0">Please select</option>');
+        }
+
+        function PopulateDropDown(dropDownId, list) {
+            if (list != null && list.length > 0) {
+                $(dropDownId).removeAttr("disabled");
+                $.each(list, function () {
+                    $(dropDownId).append($("<option></option>").val(this['Value']).html(this['Text']));
+                });
+            }
+        }
+
+        $(function () {
+            if ($("#assignedRole").val() != "" ) {
+                var message = "assignedRole: " + $("#assignedRole option:selected").text();
+                 message += "\nModule: " + $("#Module option:selected").text();
+                //alert(message);
+            }
+        });
+</script>

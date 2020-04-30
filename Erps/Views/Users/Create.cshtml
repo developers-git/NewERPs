@@ -1,0 +1,162 @@
+﻿@model Erps.Models.User
+
+@using PagedList.Mvc;
+@using WebMatrix.WebData
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+
+@{
+
+    if (User.IsInRole("Admin"))
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+    else if (User.IsInRole("User"))
+    {
+        Layout = "~/Views/Shared/_UserLayout.cshtml";
+    }
+    else if (User.IsInRole("Approver"))
+    {
+        Layout = "~/Views/Shared/_ApproverLayout.cshtml";
+    }
+    else if (User.IsInRole("BrokerAdmin"))
+    {
+        Layout = "~/Views/Shared/_BrokerAdminLayout.cshtml";
+    }
+    else if (User.IsInRole("BrokerAdmin2"))
+    {
+        Layout = "~/Views/Shared/_BrokerAdmin2Layout.cshtml";
+    }
+}
+<div class="panel panel-default" style="padding: 10px; margin: 10px">
+    <div class="panel-heading" style="background-color:#428bca">
+        <l style="color:white">Add System User Form</l>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+
+
+        <hr />
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", @style = "border:solid;border-width:thin" } })
+                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @style = "border:solid;border-width:thin" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.PasswordFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @style = "border:solid;border-width:thin" } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.PasswordFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", @style = "border:solid;border-width:thin" } })
+                    @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", @style = "border:solid;border-width:thin" } })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", @style = "border:solid;border-width:thin" } })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.IsActive)
+                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger", @style = "border:solid;border-width:thin" })
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.role, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.role, (IEnumerable<SelectListItem>)ViewBag.Role, new { @class = "form-control", @style = "border:solid;border-width:thin" })
+
+
+                    @Html.ValidationMessageFor(model => model.role, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.BrokerName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.BrokerName, (IEnumerable<SelectListItem>)ViewBag.Sell, new { @class = "form-control", @style = "border:solid;border-width:thin" })
+
+
+                    @Html.ValidationMessageFor(model => model.BrokerName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+               
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-3 ">
+                <div class="form-group">
+
+                    <input type="submit" value="Create" class="btn btn-info btn-raised btn-block btn-flat" />
+
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row">
+
+            <div class="col-md-4 ">
+                <div class="form-group">
+                    @Html.ActionLink("Back to List", "Index")
+                </div>
+            </div>
+
+        </div>
+    }
+
+   
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+</div>

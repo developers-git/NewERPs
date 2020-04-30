@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Erps.Models.User>
+@using PagedList.Mvc;
+@using WebMatrix.WebData
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+
+    if (User.IsInRole("Admin"))
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+    else if (User.IsInRole("User"))
+    {
+        Layout = "~/Views/Shared/_UserLayout.cshtml";
+    }
+    else if (User.IsInRole("Approver"))
+    {
+        Layout = "~/Views/Shared/_ApproverLayout.cshtml";
+    }
+    else if (User.IsInRole("BrokerAdmin"))
+    {
+        Layout = "~/Views/Shared/_BrokerAdminLayout.cshtml";
+    }
+    else if (User.IsInRole("BrokerAdmin2"))
+    {
+        Layout = "~/Views/Shared/_BrokerAdmin2Layout.cshtml";
+    }
+}
+
+
+<div class="panel panel-default" style="padding: 10px; margin: 10px">
+    <div class="panel-heading" style="background-color:#428bca">
+        <l style="color:white">@ViewBag.Users  Profile</l>
+    </div>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+
+
+
+            <th>
+                @Html.DisplayNameFor(model => model.CreateDate)
+            </th>
+
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+
+                <td>
+                    <a href="@Url.Action("Edit", new { id = item.UserId })">
+                        <i class="glyphicon glyphicon-pencil"></i>
+
+                    </a>
+                    |
+                    <a href="@Url.Action("Details", new { id =item.UserId})">
+                        <i class="glyphicon glyphicon-file"></i>
+
+                    </a>
+                     |
+                    <a style="color:black" href="@Url.Action("ResetPassword", new { id = item.UserId })">
+                        <i class="glyphicon glyphicon-cog"><i class="text-success" style="font-weight:bold;font-style:normal">Change Password</i></i>
+
+                    </a>
+               
+                </td>
+            </tr>
+        }
+
+    </table>
+    </div>

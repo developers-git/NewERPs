@@ -1,0 +1,76 @@
+﻿@model PagedList.IPagedList<Erps.Models.Task>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Tasks";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<p>
+    @Html.ActionLink("Create New", "Create", "", new { @class = "btn btn-primary" })
+</p>
+
+<div style="margin-left:5%;margin-right:10%;background:white" class="form-horizontal">
+    <div class="panel-heading" style="background-color:#428bca;width:700px">
+        <l style="color:white">Tasks</l>
+    </div>
+  
+        
+
+        @foreach (var item in Model)
+        {
+           <div class="row" style="border-bottom:groove">
+
+               <div class="col-md-6">
+                   <strong>Task Number</strong>:@Html.DisplayFor(modelItem => item.TaskID) 
+                   <br />
+                   <strong>@Html.ActionLink("Task Title", "Index", new { sortOrder = ViewBag.NameSortParm })</strong>:@Html.DisplayFor(modelItem => item.TaskTitle)
+                   <br />
+                   <strong>Task User</strong>:@Html.DisplayFor(modelItem => item.TaskUser) 
+                   <br />
+                   <strong>% Done</strong>:@Html.DisplayFor(modelItem => item.percentagedone),<strong>Status</strong>:@Html.DisplayFor(modelItem => item.status)
+                 <br />
+                   <strong>@Html.ActionLink("Task Due", "Index", new { sortOrder = ViewBag.NameSortParm })</strong>:@Html.DisplayFor(modelItem => item.TaskDue)
+                   
+               </div>
+               <div class="col-md-10">
+                   <strong>Task Description</strong>:@Html.DisplayFor(modelItem => item.TaskDescription)
+                   <br />
+                    <strong>From User</strong>:@Html.DisplayFor(modelItem => item.fromUser)
+                  <br />
+                   <a href="@Url.Action("Edit", new { id = item.TaskID })">
+                       <i class="glyphicon glyphicon-pencil"></i>
+
+                   </a>
+                   |
+                   <a href="@Url.Action("Details", new { id =item.TaskID})">
+                       <i class="glyphicon glyphicon-file"></i>
+
+                   </a>
+                   |
+                   <a href="@Url.Action("Delete", new { id = item.TaskID })">
+                       <i class="glyphicon glyphicon-trash"></i>
+
+                   </a>
+               </div>
+               
+           </div>
+                  
+                      
+            
+        }
+
+   
+    </div>
+  Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of
+    @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+new
+{
+    page,
+    sortOrder = ViewBag.CurrentSort,
+    currentFilter =
+ViewBag.CurrentFilter
+}))

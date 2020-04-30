@@ -1,0 +1,111 @@
+﻿@model Erps.Models.User
+
+@using PagedList.Mvc;
+@using WebMatrix.WebData
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+
+    if (User.IsInRole("Admin"))
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+    else if (User.IsInRole("User"))
+    {
+        Layout = "~/Views/Shared/_UserLayout.cshtml";
+    }
+    else if (User.IsInRole("Approver"))
+    {
+        Layout = "~/Views/Shared/_ApproverLayout.cshtml";
+    }
+    else if (User.IsInRole("BrokerAdmin"))
+    {
+        Layout = "~/Views/Shared/_BrokerAdminLayout.cshtml";
+    }
+    else if (User.IsInRole("BrokerAdmin2"))
+    {
+        Layout = "~/Views/Shared/_BrokerAdmin2Layout.cshtml";
+    }
+}
+
+<div class="panel panel-default" style="padding: 10px; margin: 10px">
+    <div class="panel-heading" style="background-color:#428bca">
+        <l style="color:white">@ViewBag.Users  Profile</l>
+    </div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Username)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Password)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ConfirmPassword)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ConfirmPassword)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreateDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreateDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.role)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.role)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    <a href="@Url.Action("Edit", new { id = Model.UserId })">
+        <i class="glyphicon glyphicon-pencil"></i>
+
+    </a>
+     |
+    @Html.ActionLink("Back to List", "Index")
+</p>

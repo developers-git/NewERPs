@@ -1,0 +1,147 @@
+﻿@model Erps.Models.Modules
+@using Erps.DAO
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+
+    <div class="panel panel-default" style="padding: 10px; margin: 10px">
+        <div class="panel-heading" style="background-color:#428bca">
+            <l style="color:white">Modules Form</l>
+        </div>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <table class="table table-striped">
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.ModulesName, htmlAttributes: new { @class = "" })
+                    <br />
+                    @Html.EditorFor(model => model.ModulesName, new { htmlAttributes = new { @class = "form-control", @style = "width:150px" } })
+                    @Html.ValidationMessageFor(model => model.ModulesName, "", new { @class = "text-danger" })
+
+                </td>
+                <td>
+
+                    @Html.LabelFor(model => model.RoleID, "RoleID", htmlAttributes: new { @class = "" })
+                    <br />
+                    @Html.DropDownList("RoleID", null, htmlAttributes: new { @class = "form-control", @style = "width:150px" })
+                    @Html.ValidationMessageFor(model => model.RoleID, "", new { @class = "text-danger" })
+
+                </td>
+                <td>
+
+                    @Html.LabelFor(model => model.ControllerName, htmlAttributes: new { @class = "" })
+                    <br />
+                    @Html.EditorFor(model => model.ControllerName, new { htmlAttributes = new { @class = "form-control", @style = "width:150px" } })
+                    @Html.ValidationMessageFor(model => model.ControllerName, "", new { @class = "text-danger" })
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                    @Html.LabelFor(model => model.ViewName, htmlAttributes: new { @class = "" })
+                    <br />
+                    @Html.EditorFor(model => model.ViewName, new { htmlAttributes = new { @class = "form-control", @style = "width:150px" } })
+                    @Html.ValidationMessageFor(model => model.ViewName, "", new { @class = "text-danger" })
+
+                </td>
+                <td>
+
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "" })
+                    <br />
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @style = "width:150px" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+
+                </td>
+                <td>
+
+                    @Html.LabelFor(model => model.IsWebForm, htmlAttributes: new { @class = "" })
+                    <br />
+                    @Html.EditorFor(model => model.IsWebForm)
+                    @Html.ValidationMessageFor(model => model.IsWebForm, "", new { @class = "text-danger" })
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                    @Html.LabelFor(model => model.webFormUrl, htmlAttributes: new { @class = "" })
+                    <br />
+                    @Html.EditorFor(model => model.webFormUrl, new { htmlAttributes = new { @class = "form-control", @style = "width:150px" } })
+                    @Html.ValidationMessageFor(model => model.webFormUrl, "", new { @class = "text-danger" })
+
+                </td>
+                <td>
+
+                    @Html.LabelFor(model => model.glyphicon, htmlAttributes: new { @class = "" })
+                    <br />
+                    @Html.DropDownListFor(model => model.glyphicon, (IEnumerable<SelectListItem>)ViewBag.Dlyp, null, htmlAttributes: new { @class = "form-control", @style = "width:150px" })
+
+                    @Html.ValidationMessageFor(model => model.glyphicon, "", new { @class = "text-danger" })
+
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.MenuRank, htmlAttributes: new { @class = "" })
+                    <br />
+                    @{
+                        SBoardContext lex = new SBoardContext();
+
+                        var check = 0;
+                        try
+                        {
+                            check = lex.Modules.ToList().Where(a => a.RoleID == Model.RoleID).Max(a => a.MenuRank);
+                        }
+                        catch (Exception)
+                        {
+
+                            check = 0;
+                        }
+
+                    }
+
+                    @{
+                        List<SelectListItem> listItems = new List<SelectListItem>();
+
+                        for (int x = check + 1; x < 100; x++)
+                        {
+                            listItems.Add(new SelectListItem
+                            {
+                                Text = x.ToString(),
+                                Value = x.ToString()
+                            });
+                        }
+                    }
+
+            @Html.DropDownListFor(model => model.MenuRank, listItems, "-- Select MenuRank --",htmlAttributes: new { @class = "form-control", @style = "width:150px" })
+          
+                    @Html.ValidationMessageFor(model => model.MenuRank, "", new { @class = "text-danger" })
+
+
+
+
+                </td>
+            </tr>
+        </table>
+        <div class="form-group">
+            <div class="col-md-2">
+                <input type="submit" value="Create" class="btn btn-info btn-raised btn-block btn-flat" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

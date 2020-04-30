@@ -1,0 +1,78 @@
+﻿@model PagedList.IPagedList<Erps.Models.Permission>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<p>
+    @Html.ActionLink("Create New", "Create", "", new { @class = "btn btn-primary" })
+</p>
+
+<div class="panel panel-default" style="padding: 10px; margin: 10px">
+    <div class="panel-heading" style="background-color:#428bca">
+        <l style="color:white">Permissions</l>
+    </div>
+    <table class="table">
+        <tr>
+         
+            <th>
+               
+                @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+            </th>
+            <th>
+               assignedRole
+            </th>
+            <th>
+             
+                @Html.ActionLink("Module", "Index", new { sortOrder = ViewBag.ModuleSortParm })
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+             
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.assignedRole)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Module)
+                </td>
+                <td>
+                    <a href="@Url.Action("Edit", new { id = item.PermissionID })">
+                        <i class="glyphicon glyphicon-pencil"></i>
+
+                    </a>
+                    |
+                    <a href="@Url.Action("Details", new { id = item.PermissionID })">
+                        <i class="glyphicon glyphicon-file"></i>
+
+                    </a>
+                    |
+                    <a href="@Url.Action("Delete", new { id = item.PermissionID })">
+                        <i class="glyphicon glyphicon-trash"></i>
+
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </table>
+    </div>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of
+    @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+new
+{
+    page,
+    sortOrder = ViewBag.CurrentSort,
+    currentFilter =
+ViewBag.CurrentFilter
+}))

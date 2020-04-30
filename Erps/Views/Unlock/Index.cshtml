@@ -1,0 +1,111 @@
+﻿@model PagedList.IPagedList<Erps.Models.User>
+@using PagedList.Mvc;
+@using WebMatrix.WebData
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+
+    if (User.IsInRole("Admin"))
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+    else if (User.IsInRole("User"))
+    {
+        Layout = "~/Views/Shared/_UserLayout.cshtml";
+    }
+    else if (User.IsInRole("Approver"))
+    {
+        Layout = "~/Views/Shared/_ApproverLayout.cshtml";
+    }
+    else if (User.IsInRole("BrokerAdmin"))
+    {
+        Layout = "~/Views/Shared/_BrokerAdminLayout.cshtml";
+    }
+
+}
+
+
+
+<div style="margin-right:10%;background:white" class="form-horizontal">
+    <div class="panel-heading" style="background-color:#428bca">
+        <l style="color:white">Unlock Users</l>
+    </div>
+    <table class="table">
+        <tr>
+            <th>
+              
+                @Html.ActionLink("Username", "Index", new { sortOrder = ViewBag.NameSortParm })
+            </th>
+            <th>
+                Email
+            </th>
+
+
+
+            <th>
+               IsActive
+            </th>
+            <th>
+               role
+            </th>
+            <th>
+                @Html.ActionLink("Created Date", "Index", new { sortOrder = ViewBag.DateSortParm })
+            </th>
+            <th>
+                Status
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.role)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+                <td>
+                    @if (item.LockCount > 0)
+                    {
+                        String locks = "Locked";
+
+                        @locks
+
+                    }
+                </td>
+                <td>
+
+
+                    <a href="@Url.Action("Unlocker", new { id = item.UserId })">
+                        <i class="glyphicon glyphicon-lock"></i>
+
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </table>
+    </div>
+  Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of
+@Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index",
+new
+{
+    page,
+    sortOrder = ViewBag.CurrentSort,
+    currentFilter =
+ViewBag.CurrentFilter
+}))

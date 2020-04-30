@@ -1,0 +1,128 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_BrokerAdminLayout.cshtml";
+}
+
+
+<script type="text/javascript" language="Javascript"
+        src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+
+<script type="text/javascript" language="javascript">
+
+    $(document).ready(function () {
+        //var idleInterval = setInterval("reloadPage()", 180000); // 30 Seconds
+    })
+
+    function reloadPage() {
+       // location.reload();
+    }
+</script>
+
+
+<!-- Styles -->
+@{
+    string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/'); ;
+
+}
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<section class="row">
+
+    <div class="col-sm-6 col-xs-6">
+        <div class="row pricing-table">
+            <div class="col-sm-6 pasi_container">
+                <div class="card pt-item">
+                    <div class="pti-header bgm-white">
+                        <h2>@ViewBag.RegC</h2>
+                        <div class="ptih-title">Registered Customers</div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-6 pasi_container">
+                <div class="card pt-item">
+                    <div class="pti-header bgm-white">
+                        <h2>@ViewBag.RegA</h2>
+                        <div class="ptih-title">Customer Account Updates</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-sm-6 pasi_container">
+                <div class="card pt-item">
+                    <div class="pti-header bgm-white">
+                        <h2>@ViewBag.PB</h2>
+                        <div class="ptih-title">Posted Buy</div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="col-sm-6 pasi_container">
+                <div class="card pt-item">
+                    <div class="pti-header bgm-white">
+                        <h2>@ViewBag.PS</h2>
+                        <div class="ptih-title">Posted Sell</div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-sm-6 col-xs-6">
+        <div class="row pricing-table">
+
+
+            <div class="col-sm-6 pasi_container">
+                <div class="card pt-item">
+                    <div class="pti-header bgm-white">
+                        <h2>@ViewBag.MB</h2>
+                        <div class="ptih-title">Matched Buy </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-sm-6 pasi_container">
+                <div class="card pt-item">
+                    <div class="pti-header bgm-white">
+                        <h2>@ViewBag.MS</h2>
+                        <div class="ptih-title">Matched Sell</div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-sm-6 pasi_container">
+                <div class="card pt-item">
+                    <div class="pti-header bgm-white">
+                        <h2>@ViewBag.SB</h2>
+                        <div class="ptih-title">Settled Buy  </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-6 pasi_container">
+                <div class="card pt-item">
+                    <div class="pti-header bgm-white">
+                        <h2>@ViewBag.SS</h2>
+                        <div class="ptih-title">Settled Sell</div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</section>
+
+

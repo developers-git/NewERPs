@@ -1,0 +1,120 @@
+﻿@model PagedList.IPagedList<Erps.Models.User>
+@using PagedList.Mvc;
+@using WebMatrix.WebData
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+
+@{
+
+    if (User.IsInRole("Admin"))
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+    else if (User.IsInRole("User"))
+    {
+        Layout = "~/Views/Shared/_UserLayout.cshtml";
+    }
+    else if (User.IsInRole("Approver"))
+    {
+        Layout = "~/Views/Shared/_ApproverLayout.cshtml";
+    }
+    else if (User.IsInRole("BrokerAdmin"))
+    {
+        Layout = "~/Views/Shared/_BrokerAdminLayout.cshtml";
+    }
+    else if (User.IsInRole("BrokerAdmin2"))
+    {
+        Layout = "~/Views/Shared/_BrokerAdmin2Layout.cshtml";
+    }
+}
+<p>
+    @Html.ActionLink("Create New", "Create", "", new { @class = "btn btn-primary" })
+</p>
+
+
+<div class="panel panel-default" style="padding: 10px; margin: 10px">
+    <div class="panel-heading" style="background-color:#428bca">
+        <l style="color:white">System Users</l>
+    </div>
+    <table class="table table-responsive">
+        <tr>
+            <th>
+                @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+            </th>
+
+
+
+            <th>
+                IsActive
+            </th>
+            <th>
+                Role
+            </th>
+            <th>
+                @Html.ActionLink("Created Date", "Index", new { sortOrder = ViewBag.DateSortParm })
+            </th>
+
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.role)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+            </tr>
+                <tr>
+
+
+                    <td>
+                        <a style="color:black" href="@Url.Action("Edit", new { id = item.UserId })">
+                            <i class="glyphicon glyphicon-pencil"><i class="text-success" style="font-weight:bold;font-style:normal">Update</i></i>
+
+                        </a>
+                    </td>
+                    <td>
+
+                        <a style="color:black" href="@Url.Action("Details", new { id =item.UserId})">
+                            <i class="glyphicon glyphicon-file"><i class="text-success" style="font-weight:bold;font-style:normal">Details</i></i>
+
+                        </a>
+                    </td>
+                    @*<td>
+                         <a style="color:black" href="@Url.Action("Delete", new { id = item.UserId })">
+                            <i class="glyphicon glyphicon-trash"><i class="text-success" style="font-weight:bold;font-style:normal">Delete</i></i>
+
+                        </a>
+                        </td>*@
+                    <td>
+
+                        <a style="color:black" href="@Url.Action("ResetPassword", new { id = item.UserId })">
+                            <i class="glyphicon glyphicon-cog"><i class="text-success" style="font-weight:bold;font-style:normal">ResetPassword</i></i>
+
+                        </a>
+                    </td>
+                </tr>
+        }
+
+    </table>
+</div>    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of
+    @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+new
+{
+    page,
+    sortOrder = ViewBag.CurrentSort,
+    currentFilter =
+ViewBag.CurrentFilter
+}))
